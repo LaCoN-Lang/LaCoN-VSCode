@@ -1,0 +1,15 @@
+.vscode/**
+.vscode-test/**
+.gitattributes
+.gitignore
+.github/
+.editorconfig
+
+image/
+docs/
+src/
+**/*.ts
+out/**/*.map
+tsconfig.json
+*.pdb
+*.exe

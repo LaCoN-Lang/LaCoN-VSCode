@@ -1,0 +1,63 @@
+{
+	"name": "lacon",
+	"displayName": "LaCoN Syntax Highlight",
+	"description": "LaCoN (Layout Configuration Notation) syntax highlight.",
+	"publisher": "YallaNkardaz",
+	"version": "0.1.4",
+	"engines": {
+		"vscode": "^1.108.1"
+	},
+	"main": "./out/extension.js",
+	"scripts": {
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./"
+	},
+	"categories": [
+		"Programming Languages"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/DemerNkardaz/lacon-vscode.git"
+	},
+	"activationEvents": [],
+	"icon": "icons/icon.png",
+	"contributes": {
+		"commands": [],
+		"menus": {
+			"editor/title": []
+		},
+		"languages": [
+			{
+				"id": "lacon",
+				"aliases": [
+					"LaCoN",
+					"lacon"
+				],
+				"extensions": [
+					".lacon",
+					".slacon",
+					".llacon"
+				],
+				"configuration": "./language-configuration.json",
+				"icon": {
+					"dark": "./icons/icon.svg",
+					"light": "./icons/icon.svg"
+				}
+			}
+		],
+		"grammars": [
+			{
+				"language": "lacon",
+				"scopeName": "source.lacon",
+				"path": "./syntaxes/lacon.tmLanguage.json"
+			}
+		]
+	},
+	"devDependencies": {
+		"@types/node": "^25.0.10",
+		"@types/vscode": "^1.108.1"
+	},
+	"dependencies": {
+		"@vscode/l10n": "^0.0.18"
+	}
+}
