@@ -10,6 +10,9 @@
 	"main": "./out/extension.js",
 	"scripts": {
 		"compile": "tsc -p ./",
+		"build": "vsce package",
+		"page": "start https://marketplace.visualstudio.com/items?itemName=YallaNkardaz.lacon",
+		"manage": "start https://marketplace.visualstudio.com/manage/",
 		"watch": "tsc -watch -p ./"
 	},
 	"categories": [
@@ -17,7 +20,7 @@
 	],
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/DemerNkardaz/lacon-vscode.git"
+		"url": "https://github.com/LaCoN-Lang/LaCoN-VSCode.git"
 	},
 	"activationEvents": [],
 	"icon": "icons/icon.png",
@@ -94,10 +97,11 @@
 		]
 	},
 	"devDependencies": {
-		"@types/node": "^25.0.10",
+		"@types/node": "^25.2.0",
 		"@types/vscode": "^1.108.1"
 	},
 	"dependencies": {
-		"@vscode/l10n": "^0.0.18"
+		"@vscode/l10n": "^0.0.18",
+		"vscode-languageclient": "^9.0.1"
 	}
 }

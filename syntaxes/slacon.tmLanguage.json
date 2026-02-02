@@ -8,8 +8,8 @@
 		{ "include": "#marker-header" },
 		{ "include": "#strings" },
 		{ "include": "#arrays" },
-		{ "include": "#numbers" },
 		{ "include": "#units" },
+		{ "include": "#numbers" },
 		{ "include": "#attributes" },
 		{ "include": "#type-annotations" },
 		{ "include": "#constants" },
@@ -80,7 +80,7 @@
 			"end": "\\]",
 			"beginCaptures": { "0": { "name": "punctuation.section.array.begin.slacon" } },
 			"endCaptures": { "0": { "name": "punctuation.section.array.end.slacon" } },
-			"patterns": [{ "include": "#comments" }, { "include": "#strings" }, { "include": "#numbers" }, { "include": "#units" }, { "include": "#constants" }, { "include": "#type-annotations" }, { "include": "#arrays" }, { "name": "text.plain.slacon", "match": "[\\p{L}_][\\p{L}\\p{N}_-]*" }]
+			"patterns": [{ "include": "#comments" }, { "include": "#strings" }, { "include": "#units" }, { "include": "#numbers" }, { "include": "#constants" }, { "include": "#type-annotations" }, { "include": "#arrays" }, { "name": "text.plain.slacon", "match": "[\\p{L}_][\\p{L}\\p{N}_-]*" }]
 		},
 		"numbers": {
 			"patterns": [

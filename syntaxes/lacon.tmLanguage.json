@@ -3,7 +3,28 @@
 	"name": "Lacon",
 	"scopeName": "source.lacon",
 	"fileTypes": ["lacon", "lcn"],
-	"patterns": [{ "include": "#comments" }, { "include": "#marker-output-section" }, { "include": "#strings" }, { "include": "#arrays" }, { "include": "#numbers" }, { "include": "#units" }, { "include": "#entry-type" }, { "include": "#keywords" }, { "include": "#storage-modifiers" }, { "include": "#declaration-keywords" }, { "include": "#access-modifiers" }, { "include": "#control-flow" }, { "include": "#operators" }, { "include": "#value-types" }, { "include": "#constants" }, { "include": "#attributes" }, { "include": "#functions" }, { "include": "#type-annotations" }, { "include": "#types" }, { "include": "#identifiers" }],
+	"patterns": [
+		{ "include": "#comments" },
+		{ "include": "#marker-output-section" },
+		{ "include": "#strings" },
+		{ "include": "#arrays" },
+		{ "include": "#units" },
+		{ "include": "#numbers" },
+		{ "include": "#entry-type" },
+		{ "include": "#keywords" },
+		{ "include": "#storage-modifiers" },
+		{ "include": "#declaration-keywords" },
+		{ "include": "#access-modifiers" },
+		{ "include": "#control-flow" },
+		{ "include": "#operators" },
+		{ "include": "#value-types" },
+		{ "include": "#constants" },
+		{ "include": "#attributes" },
+		{ "include": "#functions" },
+		{ "include": "#type-annotations" },
+		{ "include": "#types" },
+		{ "include": "#identifiers" }
+	],
 	"repository": {
 		"marker-output-section": {
 			"begin": "(?i)(\\[)(marker)(:)(output)(?:(<)([^>]+)(>))?(\\])",
@@ -22,8 +43,8 @@
 				{ "include": "#comments" },
 				{ "include": "#strings" },
 				{ "include": "#arrays" },
-				{ "include": "#numbers" },
 				{ "include": "#units" },
+				{ "include": "#numbers" },
 				{ "include": "#keywords" },
 				{ "include": "#constants" },
 				{ "include": "#operators" },
@@ -78,7 +99,7 @@
 			"endCaptures": {
 				"0": { "name": "punctuation.section.array.end.lacon" }
 			},
-			"patterns": [{ "include": "#comments" }, { "include": "#strings" }, { "include": "#numbers" }, { "include": "#units" }, { "include": "#constants" }, { "include": "#keywords" }, { "include": "#operators" }, { "include": "#interpolation" }, { "include": "#type-annotations" }, { "include": "#attributes" }, { "include": "#arrays" }, { "name": "text.plain.lacon", "match": "[\\p{L}_][\\p{L}\\p{N}_-]*" }]
+			"patterns": [{ "include": "#comments" }, { "include": "#strings" }, { "include": "#units" }, { "include": "#numbers" }, { "include": "#constants" }, { "include": "#keywords" }, { "include": "#operators" }, { "include": "#interpolation" }, { "include": "#type-annotations" }, { "include": "#attributes" }, { "include": "#arrays" }, { "name": "text.plain.lacon", "match": "[\\p{L}_][\\p{L}\\p{N}_-]*" }]
 		},
 		"comments": {
 			"patterns": [
@@ -113,7 +134,7 @@
 					"endCaptures": {
 						"0": { "name": "punctuation.definition.template-expression.end.lacon" }
 					},
-					"patterns": [{ "include": "#comments" }, { "include": "#numbers" }, { "include": "#units" }, { "include": "#keywords" }, { "include": "#storage-modifiers" }, { "include": "#declaration-keywords" }, { "include": "#access-modifiers" }, { "include": "#control-flow" }, { "include": "#operators" }, { "include": "#value-types" }, { "include": "#constants" }, { "include": "#attributes" }, { "include": "#functions" }, { "include": "#type-annotations" }, { "include": "#types" }, { "include": "#identifiers" }]
+					"patterns": [{ "include": "#comments" }, { "include": "#units" }, { "include": "#numbers" }, { "include": "#keywords" }, { "include": "#storage-modifiers" }, { "include": "#declaration-keywords" }, { "include": "#access-modifiers" }, { "include": "#control-flow" }, { "include": "#operators" }, { "include": "#value-types" }, { "include": "#constants" }, { "include": "#attributes" }, { "include": "#functions" }, { "include": "#type-annotations" }, { "include": "#types" }, { "include": "#identifiers" }]
 				}
 			]
 		},

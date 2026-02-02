@@ -20,8 +20,8 @@
     { "include": "#sections" },
     { "include": "#strings" },
     { "include": "#arrays" },
-    { "include": "#numbers" },
     { "include": "#units" },
+    { "include": "#numbers" },
     { "include": "#attributes" },
     { "include": "#type-annotations" },
     { "include": "#value-types" },
@@ -107,7 +107,7 @@
       "end": "\\]",
       "beginCaptures": { "0": { "name": "punctuation.section.array.begin.llacon" } },
       "endCaptures": { "0": { "name": "punctuation.section.array.end.llacon" } },
-      "patterns": [{ "include": "#comments" }, { "include": "#strings" }, { "include": "#numbers" }, { "include": "#units" }, { "include": "#constants" }, { "include": "#arrays" }]
+      "patterns": [{ "include": "#comments" }, { "include": "#strings" }, { "include": "#units" }, { "include": "#numbers" }, { "include": "#constants" }, { "include": "#arrays" }]
     },
     "units": {
       "patterns": [
