@@ -1,0 +1,176 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "List Lacon",
+  "scopeName": "source.llacon",
+  "fileTypes": ["llacon"],
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#interpolation" },
+    { "include": "#constants-declarations" },
+    { "include": "#logic-keywords" },
+    {
+      "comment": "Ключ данных: Исключаем yield, spread, generate и прочие ключевые слова",
+      "name": "meta.entry.llacon",
+      "match": "(?<!\\bconst|\\bconstant|\\blet|\\buse|\\bschema|\\byield|\\bspread|\\bgenerate)\\s*\\b([\\p{L}_][\\p{L}\\p{N}_-]*)\\b(?=\\s*(?:[:=@<]|(?:\\s+[\\p{L}\\p{N}_\"'`{\\[])))",
+      "captures": {
+        "1": { "name": "entity.name.function.llacon" }
+      }
+    },
+    { "include": "#marker-header" },
+    { "include": "#sections" },
+    { "include": "#strings" },
+    { "include": "#arrays" },
+    { "include": "#numbers" },
+    { "include": "#units" },
+    { "include": "#attributes" },
+    { "include": "#type-annotations" },
+    { "include": "#value-types" },
+    { "include": "#operators" },
+    { "include": "#constants" },
+    { "include": "#identifiers" }
+  ],
+  "repository": {
+    "constants-declarations": {
+      "patterns": [
+        {
+          "match": "\\b(const|constant|let)\\b\\s+([\\p{L}_][\\p{L}\\p{N}_-]*)",
+          "captures": {
+            "1": { "name": "storage.type.constant.llacon" },
+            "2": { "name": "variable.other.constant.llacon" }
+          }
+        }
+      ]
+    },
+    "logic-keywords": {
+      "patterns": [
+        { "name": "keyword.control.flow.llacon", "match": "\\b(yield|break|cancel|continue|return)\\b" },
+        { "name": "keyword.control.loop.llacon", "match": "\\b(generate|spread|for|loop|while|until)\\b" },
+        { "name": "keyword.control.conditional.llacon", "match": "\\b(if|elif|else)\\b" },
+        {
+          "name": "keyword.control.import.llacon",
+          "match": "(?<!\\.)\\b(import|export|from|include|provide|schema)\\b"
+        },
+        {
+          "name": "support.class.llacon",
+          "match": "(?<!\\.)\\b(use|marker|Marker)\\b"
+        },
+        { "name": "keyword.operator.expression.llacon", "match": "\\b(as|is|in|where|contains|of|with)\\b" }
+      ]
+    },
+    "marker-header": {
+      "match": "(?i)(\\[)(marker)(:)(output)(?:(<)([^>]+)(>))?(\\])",
+      "captures": {
+        "1": { "name": "punctuation.definition.tag.llacon" },
+        "2": { "name": "support.class.llacon" },
+        "3": { "name": "keyword.operator.other.llacon" },
+        "4": { "name": "variable.language.output.llacon" },
+        "5": { "name": "punctuation.definition.typeparameters.begin.llacon" },
+        "6": { "name": "entity.name.type.llacon" },
+        "7": { "name": "punctuation.definition.typeparameters.end.llacon" },
+        "8": { "name": "punctuation.definition.tag.llacon" }
+      }
+    },
+    "comments": {
+      "patterns": [
+        { "name": "comment.line.llacon", "begin": "/\\|\\\\", "end": "$", "captures": { "0": { "name": "punctuation.definition.comment.llacon" } } },
+        { "name": "comment.block.llacon", "begin": "/\\*", "end": "\\*/", "captures": { "0": { "name": "punctuation.definition.comment.llacon" } } }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.llacon",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [{ "include": "#interpolation" }, { "name": "constant.character.escape.llacon", "match": "\\\\." }]
+        },
+        { "name": "string.quoted.single.llacon", "begin": "`", "end": "`", "patterns": [{ "include": "#interpolation" }] },
+        { "name": "string.quoted.other.llacon", "begin": "'", "end": "'", "patterns": [{ "include": "#interpolation" }] }
+      ]
+    },
+    "interpolation": {
+      "name": "meta.embedded.expression.llacon",
+      "begin": "\\$\\{",
+      "end": "\\}",
+      "beginCaptures": { "0": { "name": "punctuation.definition.template-expression.begin.llacon" } },
+      "endCaptures": { "0": { "name": "punctuation.definition.template-expression.end.llacon" } },
+      "patterns": [
+        { "include": "#logic-keywords" },
+        { "include": "#operators" },
+        { "include": "#identifiers" },
+        { "include": "#numbers" },
+        { "include": "#strings" }
+      ]
+    },
+    "arrays": {
+      "begin": "\\[",
+      "end": "\\]",
+      "beginCaptures": { "0": { "name": "punctuation.section.array.begin.llacon" } },
+      "endCaptures": { "0": { "name": "punctuation.section.array.end.llacon" } },
+      "patterns": [{ "include": "#comments" }, { "include": "#strings" }, { "include": "#numbers" }, { "include": "#units" }, { "include": "#constants" }, { "include": "#arrays" }]
+    },
+    "units": {
+      "patterns": [
+        {
+          "match": "(?:\\b(\\d[0-9_]*(?:\\.[0-9_]+)?(?:[eE][+-]?\\d+)?|Infinity))\\s*((?:(?:deg|da|h|k|M|G|T|P|E|Z|Y|R|Q|d|c|m|μ|n|p|f|a|z|y|r|q)*i?)(?:sec|min|hour|day|week|month|year|Byte|bit|Bel|erg|mol|ohm|rem|cal|psi|bar|Wh|eV|lx|lm|cd|lb|oz|kn|px|em|pt|in|pc|Ro|Ra|Re|K|N|Da|De|Hz|h|m|L|g|V|A|W|Å|Ω|C|S|F|J|Pa|T|s|D|t)[0-9_]*)",
+          "captures": {
+            "1": { "name": "constant.numeric.llacon" },
+            "2": { "name": "keyword.other.unit.base.llacon" }
+          }
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        { "name": "constant.numeric.float.llacon", "match": "\\b\\d[0-9_]*\\.\\d[0-9_]*([eE][+-]?\\d[0-9_]*)?\\b" },
+        { "name": "constant.numeric.integer.llacon", "match": "\\b\\d[0-9_]*\\b" }
+      ]
+    },
+    "attributes": {
+      "patterns": [
+        { "name": "entity.name.tag.attribute.llacon", "match": "@[\\p{L}_][\\p{L}\\p{N}_-]*" },
+        {
+          "begin": "(@)(\\[)",
+          "end": "\\]",
+          "beginCaptures": { "1": { "name": "entity.name.tag.attribute.llacon" }, "2": { "name": "punctuation.section.bracket.begin.llacon" } },
+          "patterns": [{ "include": "#logic-keywords" }, { "include": "#operators" }, { "include": "#constants" }, { "include": "#strings" }]
+        }
+      ]
+    },
+    "type-annotations": {
+      "begin": "(<)",
+      "end": "(>)",
+      "beginCaptures": { "1": { "name": "punctuation.definition.typeparameters.begin.llacon" } },
+      "endCaptures": { "1": { "name": "punctuation.definition.typeparameters.end.llacon" } },
+      "patterns": [{ "include": "#value-types" }, { "name": "entity.name.type.llacon", "match": "[\\p{L}_][\\p{L}\\p{N}_]*" }]
+    },
+    "value-types": {
+      "patterns": [{ "name": "support.type.llacon", "match": "\\b(String|Number|Int|Float|Boolean|Any|None|Array|Dictionary|Length|Power|Mass|Time|MassFlow)\\b" }]
+    },
+    "sections": {
+      "match": "§[\\p{L}_\\p{N}0-9_-]*",
+      "name": "storage.type.llacon"
+    },
+    "operators": {
+      "patterns": [
+        { "name": "keyword.operator.logical.llacon", "match": "\\b(and|or|not)\\b" },
+        { "name": "keyword.operator.arithmetic.llacon", "match": "([-+*/%×⋅°]|delta|Δ)" },
+        { "name": "keyword.operator.comparison.llacon", "match": "([><~!=]=?)" },
+        { "name": "keyword.operator.other.llacon", "match": "([:@=#\\.\\.\\.])" }
+      ]
+    },
+    "constants": {
+      "patterns": [
+        { "name": "constant.language.boolean.llacon", "match": "\\b(true|false)\\b" },
+        { "name": "constant.language.null.llacon", "match": "\\b(nil|undefined)\\b" },
+        { "name": "variable.language.llacon", "match": "\\b(root|self|parent|origin)\\b" }
+      ]
+    },
+    "identifiers": {
+      "patterns": [
+        { "name": "variable.other.constant.llacon", "match": "\\b[\\p{Lu}][\\p{Lu}\\p{N}_]*\\b" },
+        { "name": "variable.other.llacon", "match": "\\b[\\p{Ll}_][\\p{L}\\p{N}_-]*\\b" }
+      ]
+    }
+  }
+}

@@ -1,308 +1,361 @@
 {
-  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
-  "name": "Lacon",
-  "scopeName": "source.lacon",
-  "fileTypes": ["lacon", "lcn"],
-  "patterns": [
-    { "include": "#comments" },
-    { "include": "#strings" },
-    { "include": "#numbers" },
-    { "include": "#units" },
-    { "include": "#keywords" },
-    { "include": "#storage-modifiers" },
-    { "include": "#declaration-keywords" },
-    { "include": "#access-modifiers" },
-    { "include": "#control-flow" },
-    { "include": "#operators" },
-    { "include": "#value-types" },
-    { "include": "#constants" },
-    { "include": "#attributes" },
-    { "include": "#functions" },
-    { "include": "#type-annotations" },
-    { "include": "#types" },
-    { "include": "#identifiers" }
-  ],
-  "repository": {
-    "comments": {
-      "patterns": [
-        {
-          "name": "comment.line.lacon",
-          "begin": "/\\|\\\\",
-          "end": "$",
-          "captures": {
-            "0": { "name": "punctuation.definition.comment.lacon" }
-          }
-        },
-        {
-          "name": "comment.block.lacon",
-          "begin": "/\\*",
-          "end": "\\*/",
-          "captures": {
-            "0": { "name": "punctuation.definition.comment.lacon" }
-          }
-        }
-      ]
-    },
-    "interpolation": {
-      "patterns": [
-        {
-          "name": "meta.embedded.expression.lacon",
-          "contentName": "source.lacon.embedded",
-          "begin": "\\$\\{",
-          "beginCaptures": {
-            "0": { "name": "punctuation.definition.template-expression.begin.lacon" }
-          },
-          "end": "\\}",
-          "endCaptures": {
-            "0": { "name": "punctuation.definition.template-expression.end.lacon" }
-          },
-          "patterns": [
-            { "include": "#comments" },
-            { "include": "#numbers" },
-            { "include": "#units" },
-            { "include": "#keywords" },
-            { "include": "#storage-modifiers" },
-            { "include": "#declaration-keywords" },
-            { "include": "#access-modifiers" },
-            { "include": "#control-flow" },
-            { "include": "#operators" },
-            { "include": "#value-types" },
-            { "include": "#constants" },
-            { "include": "#attributes" },
-            { "include": "#functions" },
-            { "include": "#type-annotations" },
-            { "include": "#types" },
-            { "include": "#identifiers" }
-          ]
-        }
-      ]
-    },
-    "strings": {
-      "patterns": [
-        {
-          "name": "string.quoted.triple.lacon",
-          "begin": "\"\"\"",
-          "end": "\"\"\"",
-          "patterns": [
-            { "include": "#interpolation" },
-            { "name": "constant.character.escape.lacon", "match": "\\\\." }
-          ]
-        },
-        {
-          "name": "string.quoted.double.lacon",
-          "begin": "\"",
-          "end": "\"",
-          "patterns": [
-            { "include": "#interpolation" },
-            {
-              "name": "constant.character.escape.lacon",
-              "match": "\\\\([\"\\\\/bfnrt]|u[0-9a-fA-F]{4})"
-            }
-          ]
-        },
-        {
-          "name": "unhighlighted.lacon",
-          "begin": "'",
-          "end": "'",
-          "patterns": [
-            { "include": "#interpolation" },
-            {
-              "name": "constant.character.escape.lacon",
-              "match": "\\\\([\"\\\\/bfnrt]|u[0-9a-fA-F]{4})"
-            }
-          ]
-        },
-        {
-          "name": "string.quoted.single.lacon",
-          "begin": "`",
-          "end": "`",
-          "patterns": [
-            { "include": "#interpolation" },
-            {
-              "name": "constant.character.escape.lacon",
-              "match": "\\\\([\"\\\\/bfnrt]|u[0-9a-fA-F]{4})"
-            }
-          ]
-        }
-      ]
-    },
-    "numbers": {
-      "patterns": [
-        { "name": "constant.numeric.binary.lacon", "match": "\\b0[bB][01_]+\\b" },
-        { "name": "constant.numeric.octal.lacon", "match": "\\b0[oO][0-7_]+\\b" },
-        { "name": "constant.numeric.hex.lacon", "match": "\\b0[xX][0-9a-fA-F_]+\\b" },
-        { "name": "constant.numeric.base32.lacon", "match": "\\b0[tT][0-9a-vA-V_]+\\b" },
-        { "name": "constant.numeric.base32.crockford.lacon", "match": "\\b0[cC][0-9a-zA-Z_&&[^iIlLoOuU]]+\\b" },
-        { "name": "constant.numeric.float.lacon", "match": "\\b\\d[0-9_]*\\.\\d[0-9_]*([eE][+-]?\\d[0-9_]*)?\\b" },
-        { "name": "constant.numeric.float.lacon", "match": "(?<=\\d)\\.(?=\\d)" },
-        { "name": "constant.numeric.integer.lacon", "match": "\\b\\d[0-9_]*\\b" },
-        { "name": "constant.numeric.infinity.lacon", "match": "\\b([iI]nfinity|[nN]aN)\\b" }
-      ]
-    },
-    "units": {
-      "patterns": [
-        {
-          "comment": "1. Проценты",
-          "match": "(\\b\\d[0-9_]*(?:\\.[0-9_]+)?)([%‰‱])",
-          "captures": {
-            "1": { "name": "constant.numeric.lacon" },
-            "2": { "name": "keyword.other.unit.percent.lacon" }
-          }
-        },
-{
-  "comment": "2a. Число/n + единица",
-  "match": "(?:\\b(0|\\b0[bB][01_]+|\\b0[oO][0-7_]+|0[xX][0-9a-fA-F_]|0t[0-9a-vA-V_]|0[cC][0-9a-zA-Z_&&[^iIlLoOuU]]+|\\d[0-9_]*(?:\\.[0-9_]+)?(?:[eE][+-]?\\d+)?|Infinity)|\\b(n))\\s*((?:(?:deg|da|h|k|M|G|T|P|E|Z|Y|R|Q|d|c|m|μ|n|p|f|a|z|y|r|q)*i?)(?:sec|min|hour|day|week|month|year|Byte|bit|Bel|erg|mol|ohm|rem|cal|psi|bar|Wh|eV|lx|lm|cd|lb|oz|kn|px|em|pt|in|pc|Ro|Ra|Re|K|N|Da|De|Hz|h|m|L|g|V|A|W|Å|Ω|C|S|F|J|Pa|T|s|D|t)[0-9_]*)(?![a-zA-Z0-9_])",
-  "captures": {
-    "1": { "name": "constant.numeric.lacon" },
-    "2": { "name": "variable.language.n-value.lacon" },
-    "3": { "name": "keyword.other.unit.base.lacon" }
-  }
-},
-{
-  "comment": "2b. Оператор + единица",
-  "match": "([/*×⋅°])((?:(?:deg|da|h|k|M|G|T|P|E|Z|Y|R|Q|d|c|m|μ|n|p|f|a|z|y|r|q)*i?)(?:sec|min|hour|day|week|month|year|Byte|bit|Bel|erg|mol|ohm|rem|cal|psi|bar|Wh|eV|lx|lm|cd|lb|oz|kn|px|em|pt|in|pc|Ro|Ra|Re|K|N|Da|De|Hz|h|m|L|g|V|A|W|Å|Ω|C|S|F|J|Pa|T|s|D|t)[0-9_]*)(?![a-zA-Z0-9_])",
-  "captures": {
-    "1": { "name": "keyword.other.unit.operator.lacon" },
-    "2": { "name": "keyword.other.unit.base.lacon" }
-  }
-}
-      ]
-    },
-    "declaration-keywords": {
-      "patterns": [
-        { "name": "storage.type.variable.lacon", "match": "\\b(let|variable|var)\\b" },
-        { "name": "storage.type.structure.lacon", "match": "\\b(struct|structure)\\b" },
-        { "name": "storage.type.constant.lacon", "match": "\\b(const|constant)\\b" },
-        { "name": "storage.type.container.lacon", "match": "\\b(cont|container)\\b" }
-      ]
-    },
-    "keywords": {
-      "patterns": [
-        { "name": "keyword.control.import.lacon", "match": "(?<!\\.)\\b(import|export|from|include|provide|schema)\\b" },
-        { "name": "keyword.control.conditional.lacon", "match": "(?<!\\.)\\b(if|else|elif|match|case|default|switch|when)\\b" },
-        { "name": "keyword.control.loop.lacon", "match": "(?<!\\.)\\b(for|while|loop)\\b" },
-        { "name": "keyword.control.directive.lacon", "match": "(?<!\\.)\\b(generate|spread|filter)\\b" },
-        { "name": "keyword.control.flow.lacon", "match": "(?<!\\.)\\b(break|continue|return|yield|exit|cancel|until)\\b" },
-        { "name": "keyword.control.exception.lacon", "match": "(?<!\\.)\\b(try|catch|finally|throw)\\b" },
-        { "name": "keyword.control.async.lacon", "match": "(?<!\\.)\\b(await|async|coroutine|defer)\\b" },
-        { "name": "keyword.control.other.lacon", "match": "(?<!\\.)\\b(sanction|be|only|context|condition|action|capability|may)\\b" },
-        { "name": "keyword.operator.expression.lacon", "match": "(?<!\\.)\\b(contains|where|with|as|is|in|of|[eE]xtends|[iI]mplements)\\b" },
-        { "name": "support.class.lacon", "match": "(?<!\\.)\\b(new|use)\\b" },
-        { "name": "support.class.lacon", "match": "(?<!\\.)\\b([mM]arker)\\b" },
-        { "name": "entity.name.section.lacon", "match": "\\b([gGsS]et)\\b" }
-      ]
-    },
-    "storage-modifiers": {
-      "patterns": [
-        { "name": "storage.type.lacon", "match": "(§[\\p{L}_\\p{N}0-9_-]*|(?<![\\w_-])\\b(class|section|interface|enum|func|function|proc|procedure|[tT]ype|alias)\\b(?![\\w_-]))" },
-        { "name": "support.type.lacon", "match": "\\b(auto)\\b" },
-        { "name": "storage.modifier.oo.lacon", "match": "\\b(static|virtual|abstract|override|final|(im)?mutable)\\b" }
-      ]
-    },
-    "access-modifiers": {
-      "patterns": [
-        { "name": "storage.modifier.access.lacon", "match": "\\b(public|private|protected|internal|external|global|local|strict)\\b" }
-      ]
-    },
-    "operators": {
-      "patterns": [
-        { "name": "keyword.operator.logical.lacon", "match": "\\b(and|or|not)\\b" },
-        { "name": "keyword.operator.arrow.lacon", "match": "([|=-][<>])" },
-        { "name": "keyword.operator.logical.symbolic.lacon", "match": "(&&|\\|\\||\\?\\?|!)" },
-        { "name": "keyword.operator.assignment.lacon", "match": "([.+*/%‰‱&|^]?=)" },
-        { "name": "keyword.operator.comparison.lacon", "match": "([><~!=]=?=?)" },
-        { "name": "keyword.operator.arithmetic.lacon", "match": "([-+./]?[\/*+%‰‱-])" },
-        { "name": "keyword.operator.bitwise.lacon", "match": "(&|\\||\\^|~)" },
-        { "name": "keyword.operator.other.lacon", "match": "(\\?|:|@|#|\\$|\\.\\.\\.|\\.\\.|\\\\)" },
-        { "name": "keyword.operator.other.lacon", "match": "(\u2238|\u2214|\u00B1|\u00D7|\u00F7|\u2260|\u2264|\u2265|\u2263)" },
-        { "name": "keyword.operator.floor.lacon", "match": "(⌊|⌋|⌈|⌉)" },
-        { "name": "keyword.operator.floor.lacon", "match": "(delta|Δ)" }
-      ]
-    },
-    "constants": {
-      "patterns": [
-        { "name": "constant.language.boolean.lacon", "match": "\\b(true|false)\\b" },
-        { "name": "constant.language.null.lacon", "match": "\\b(nil|undefined)\\b" },
-        { "name": "support.type.lacon", "match": "\\b(none)\\b" },
-        { "name": "variable.language.lacon", "match": "\\b(this|super|root|parent|origin|here|self)\\b" },
-        { "name": "variable.language.value.lacon", "match": "\\b(values?|v|vals?)\\b" },
-        { "name": "variable.language.method.lacon", "match": "\\b(methods?)\\b" },
-        { "name": "variable.language.input.lacon", "match": "\\b(inputs?)\\b" },
-        { "name": "variable.language.output.lacon", "match": "\\b(outputs?)\\b" },
-        { "name": "variable.language.argument.lacon", "match": "\\b(arguments?|args?)\\b" },
-        { "name": "variable.language.data.lacon", "match": "\\b(data)\\b" },
-        { "name": "variable.language.each.lacon", "match": "\\b(each)\\b" },
-        { "name": "variable.language.item.lacon", "match": "\\b(items?)\\b" },
-        { "name": "variable.language.element.lacon", "match": "\\b(elements?|elems?)\\b" },
-        { "name": "variable.language.key.lacon", "match": "\\b(keys?|k)\\b" },
-        { "name": "variable.language.index.lacon", "match": "\\b(index|indexes|i|j)\\b" },
-        { "name": "variable.language.flag.lacon", "match": "\\b(flags?|f)\\b" },
-        { "name": "variable.language.xyz.lacon", "match": "\\b(x|y|z)\\b" },
-        { "name": "variable.language.other.lacon", "match": "\\b(t|c|r|n|m)\\b" },
-        { "name": "constant.other.placeholder.lacon", "match": "\\b_\\b" }
-      ]
-    },
-    "value-types": {
-      "patterns": [
-        { "name": "support.type.number.lacon", "match": "\\b(Number|Int|Float|Hex|Octal|Binary|Base32)\\b" },
-        { "name": "support.type.unit.lacon", "match": "\\b(Unit|Length|Time|Velocity|Acceleration|Jerk|Snap|Crackle|Pop|Amount|Degree|Radian|Percent|Frequency|Fraction|Dimension|Temperature|Pressure|Volume|Energy|Size|Mass|Force|Area|BitRate|Momentum|Expr|Scalar)\\b" },
-        { "name": "support.type.unit.electric.lacon", "match": "\\b(Electric)*(Power|Current|Voltage|Charge|Resistance|Conductance|Capacitance)\\b" },
-        { "name": "support.type.unit.light.lacon", "match": "\\b(LuminousFlux|Illuminance|LuminousIntensity)\\b" },
-        { "name": "support.type.object.lacon", "match": "\\b(Subject|Object|Array|Dictionary|Table|Function|Procedure|MultilineString)\\b" },
-        { "name": "support.type.other.lacon", "match": "\\b(Any|String|Boolean|Auto|None|Nil|Undefined|Color)\\b" }
-      ]
-    },
-    "attributes": {
-      "patterns": [
-        { "name": "storage.type.attribute.lacon", "match": "\\b(meta|reflect|attribute)\\b" },
-        { "name": "entity.name.tag.attribute.lacon", "match": "@[\\p{L}_][\\p{L}\\p{N}_-]*" },
-        { "name": "entity.name.tag.directive.lacon", "match": "#[\\p{L}_][\\p{L}\\p{N}_-]*" }
-      ]
-    },
-    "functions": {
-      "patterns": [
-        {
-          "match": "\\b(function|procedure)\\s+([\\p{L}_][\\p{L}\\p{N}_-]*)(?:\\s*<[^>]+>)?",
-          "captures": {
-            "1": { "name": "storage.type.function.lacon" },
-            "2": { "name": "entity.name.function.lacon" }
-          }
-        },
-        {
-          "name": "entity.name.function.call.lacon",
-          "match": "\\b([\\p{L}_][\\p{L}\\p{N}_-]*)(?=\\s*<[^>]+>\\s*\\(|\\s*\\()"
-        }
-      ]
-    },
-    "type-annotations": {
-      "patterns": [
-        {
-          "match": "(<)([\\p{L}_][\\p{L}\\p{N}_]*)(>)",
-          "captures": {
-            "1": { "name": "punctuation.definition.typeparameters.begin.lacon" },
-            "2": { "name": "entity.name.type.lacon" },
-            "3": { "name": "punctuation.definition.typeparameters.end.lacon" }
-          }
-        }
-      ]
-    },
-    "types": {
-      "patterns": [
-        {
-          "match": "\\b(class|interface|enum)\\s+([\\p{Lu}][\\p{L}\\p{N}_]*)",
-          "captures": {
-            "1": { "name": "storage.type.lacon" },
-            "2": { "name": "entity.name.type.lacon" }
-          }
-        },
-        { "name": "entity.name.type.lacon", "match": "\\b[\\p{Lu}][\\p{L}\\p{N}_]*\\b" }
-      ]
-    },
-    "identifiers": {
-      "patterns": [
-        { "name": "variable.other.constant.lacon", "match": "\\b[\\p{Lu}][\\p{Lu}\\p{N}_]*\\b" },
-        { "name": "variable.other.lacon", "match": "\\b[\\p{Ll}_][\\p{L}\\p{N}_-]*\\b" }
-      ]
-    }
-  }
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Lacon",
+	"scopeName": "source.lacon",
+	"fileTypes": ["lacon", "lcn"],
+	"patterns": [{ "include": "#comments" }, { "include": "#marker-output-section" }, { "include": "#strings" }, { "include": "#arrays" }, { "include": "#numbers" }, { "include": "#units" }, { "include": "#entry-type" }, { "include": "#keywords" }, { "include": "#storage-modifiers" }, { "include": "#declaration-keywords" }, { "include": "#access-modifiers" }, { "include": "#control-flow" }, { "include": "#operators" }, { "include": "#value-types" }, { "include": "#constants" }, { "include": "#attributes" }, { "include": "#functions" }, { "include": "#type-annotations" }, { "include": "#types" }, { "include": "#identifiers" }],
+	"repository": {
+		"marker-output-section": {
+			"begin": "(?i)(\\[)(marker)(:)(output)(?:(<)([^>]+)(>))?(\\])",
+			"beginCaptures": {
+				"1": { "name": "punctuation.definition.tag.lacon" },
+				"2": { "name": "support.class.lacon" },
+				"3": { "name": "keyword.operator.other.lacon" },
+				"4": { "name": "variable.language.output.lacon" },
+				"5": { "name": "punctuation.definition.typeparameters.begin.lacon" },
+				"6": { "name": "entity.name.type.lacon" },
+				"7": { "name": "punctuation.definition.typeparameters.end.lacon" },
+				"8": { "name": "punctuation.definition.tag.lacon" }
+			},
+			"end": "(?=NOT_POSSIBLE_MATCH)",
+			"patterns": [
+				{ "include": "#comments" },
+				{ "include": "#strings" },
+				{ "include": "#arrays" },
+				{ "include": "#numbers" },
+				{ "include": "#units" },
+				{ "include": "#keywords" },
+				{ "include": "#constants" },
+				{ "include": "#operators" },
+				{ "include": "#type-annotations" },
+				{ "include": "#attributes" },
+				{ "include": "#output-plain-text-entry" },
+				{
+					"name": "meta.key-value.lacon",
+					"match": "\\b([\\p{L}_][\\p{L}\\p{N}_-]*)\\b(?=\\s*[:=@<]|\\s+([\\p{L}\\p{N}_\"'`{\\[]))",
+					"captures": {
+						"1": { "name": "entity.name.function.lacon" }
+					}
+				},
+				{ "include": "#types" },
+				{ "include": "#identifiers" }
+			]
+		},
+		"output-plain-text-entry": {
+			"begin": "([\\p{L}_][\\p{L}\\p{N}_-]*)\\s*(?=[:=@<])|([\\p{L}_][\\p{L}\\p{N}_-]*)\\s+(?![\\d\\[\\]{}\"'`$])",
+			"beginCaptures": {
+				"1": { "name": "entity.name.function.lacon" },
+				"2": { "name": "entity.name.function.lacon" }
+			},
+			"end": "$",
+			"patterns": [{ "include": "#comments" }, { "include": "#interpolation" }, { "include": "#type-annotations" }, { "include": "#attributes" }, { "include": "#units" }, { "include": "#numbers" }, { "include": "#constants" }, { "include": "#operators" }, { "name": "text.plain.lacon", "match": ".+?" }]
+		},
+		"entry-type": {
+			"patterns": [
+				{
+					"begin": "(?<=\\bentry\\s+)([\\p{L}_][\\p{L}\\p{N}_-]*)\\s*(?=[:=@<])|(?<=\\bentry\\s+)([\\p{L}_][\\p{L}\\p{N}_-]*)\\s+(?![\\[\\]{}\"'`])",
+					"end": "$",
+					"beginCaptures": {
+						"1": { "name": "entity.name.function.lacon" },
+						"2": { "name": "entity.name.function.lacon" }
+					},
+					"patterns": [{ "include": "#comments" }, { "include": "#interpolation" }, { "include": "#type-annotations" }, { "include": "#attributes" }, { "include": "#units" }, { "include": "#numbers" }, { "include": "#constants" }, { "include": "#operators" }, { "name": "text.plain.lacon", "match": ".+?" }]
+				},
+				{
+					"match": "(?<=\\bentry\\s+)([\\p{L}_][\\p{L}\\p{N}_-]*)",
+					"captures": {
+						"1": { "name": "entity.name.function.lacon" }
+					}
+				}
+			]
+		},
+		"arrays": {
+			"begin": "\\[",
+			"beginCaptures": {
+				"0": { "name": "punctuation.section.array.begin.lacon" }
+			},
+			"end": "\\]",
+			"endCaptures": {
+				"0": { "name": "punctuation.section.array.end.lacon" }
+			},
+			"patterns": [{ "include": "#comments" }, { "include": "#strings" }, { "include": "#numbers" }, { "include": "#units" }, { "include": "#constants" }, { "include": "#keywords" }, { "include": "#operators" }, { "include": "#interpolation" }, { "include": "#type-annotations" }, { "include": "#attributes" }, { "include": "#arrays" }, { "name": "text.plain.lacon", "match": "[\\p{L}_][\\p{L}\\p{N}_-]*" }]
+		},
+		"comments": {
+			"patterns": [
+				{
+					"name": "comment.line.lacon",
+					"begin": "/\\|\\\\",
+					"end": "$",
+					"captures": {
+						"0": { "name": "punctuation.definition.comment.lacon" }
+					}
+				},
+				{
+					"name": "comment.block.lacon",
+					"begin": "/\\*",
+					"end": "\\*/",
+					"captures": {
+						"0": { "name": "punctuation.definition.comment.lacon" }
+					}
+				}
+			]
+		},
+		"interpolation": {
+			"patterns": [
+				{
+					"name": "meta.embedded.expression.lacon",
+					"contentName": "source.lacon.embedded",
+					"begin": "\\$\\{",
+					"beginCaptures": {
+						"0": { "name": "punctuation.definition.template-expression.begin.lacon" }
+					},
+					"end": "\\}",
+					"endCaptures": {
+						"0": { "name": "punctuation.definition.template-expression.end.lacon" }
+					},
+					"patterns": [{ "include": "#comments" }, { "include": "#numbers" }, { "include": "#units" }, { "include": "#keywords" }, { "include": "#storage-modifiers" }, { "include": "#declaration-keywords" }, { "include": "#access-modifiers" }, { "include": "#control-flow" }, { "include": "#operators" }, { "include": "#value-types" }, { "include": "#constants" }, { "include": "#attributes" }, { "include": "#functions" }, { "include": "#type-annotations" }, { "include": "#types" }, { "include": "#identifiers" }]
+				}
+			]
+		},
+		"strings": {
+			"patterns": [
+				{
+					"name": "string.quoted.triple.lacon",
+					"begin": "\"\"\"",
+					"end": "\"\"\"",
+					"patterns": [{ "include": "#interpolation" }, { "name": "constant.character.escape.lacon", "match": "\\\\." }]
+				},
+				{
+					"name": "string.quoted.double.lacon",
+					"begin": "\"",
+					"end": "\"",
+					"patterns": [
+						{ "include": "#interpolation" },
+						{
+							"name": "constant.character.escape.lacon",
+							"match": "\\\\([\"\\\\/bfnrt]|u[0-9a-fA-F]{4})"
+						}
+					]
+				},
+				{
+					"name": "unhighlighted.lacon",
+					"begin": "'",
+					"end": "'",
+					"patterns": [
+						{ "include": "#interpolation" },
+						{
+							"name": "constant.character.escape.lacon",
+							"match": "\\\\([\"\\\\/bfnrt]|u[0-9a-fA-F]{4})"
+						}
+					]
+				},
+				{
+					"name": "string.quoted.single.lacon",
+					"begin": "`",
+					"end": "`",
+					"patterns": [
+						{ "include": "#interpolation" },
+						{
+							"name": "constant.character.escape.lacon",
+							"match": "\\\\([\"\\\\/bfnrt]|u[0-9a-fA-F]{4})"
+						}
+					]
+				}
+			]
+		},
+		"numbers": {
+			"patterns": [
+				{ "name": "constant.numeric.binary.lacon", "match": "\\b0[bB][01_]+\\b" },
+				{ "name": "constant.numeric.octal.lacon", "match": "\\b0[oO][0-7_]+\\b" },
+				{ "name": "constant.numeric.hex.lacon", "match": "\\b0[xX][0-9a-fA-F_]+\\b" },
+				{ "name": "constant.numeric.base32.lacon", "match": "\\b0[tT][0-9a-vA-V_]+\\b" },
+				{ "name": "constant.numeric.base32.crockford.lacon", "match": "\\b0[cC][0-9a-zA-Z_&&[^iIlLoOuU]]+\\b" },
+				{ "name": "constant.numeric.float.lacon", "match": "\\b\\d[0-9_]*\\.\\d[0-9_]*([eE][+-]?\\d[0-9_]*)?\\b" },
+				{ "name": "constant.numeric.float.lacon", "match": "(?<=\\d)\\.(?=\\d)" },
+				{ "name": "constant.numeric.integer.lacon", "match": "\\b\\d[0-9_]*\\b" },
+				{ "name": "constant.numeric.infinity.lacon", "match": "\\b([iI]nfinity|[nN]aN)\\b" }
+			]
+		},
+		"units": {
+			"patterns": [
+				{
+					"comment": "1. Проценты",
+					"match": "(\\b\\d[0-9_]*(?:\\.[0-9_]+)?)([%‰‱])",
+					"captures": {
+						"1": { "name": "constant.numeric.lacon" },
+						"2": { "name": "keyword.other.unit.percent.lacon" }
+					}
+				},
+				{
+					"comment": "2a. Число/n + единица",
+					"match": "(?:\\b(0|\\b0[bB][01_]+|\\b0[oO][0-7_]+|0[xX][0-9a-fA-F_]|0t[0-9a-vA-V_]|0[cC][0-9a-zA-Z_&&[^iIlLoOuU]]+|\\d[0-9_]*(?:\\.[0-9_]+)?(?:[eE][+-]?\\d+)?|Infinity)|\\b(n))\\s*((?:(?:deg|da|h|k|M|G|T|P|E|Z|Y|R|Q|d|c|m|μ|n|p|f|a|z|y|r|q)*i?)(?:sec|min|hour|day|week|month|year|Byte|bit|Bel|erg|mol|ohm|rem|cal|psi|bar|Wh|eV|lx|lm|cd|lb|oz|kn|px|em|pt|in|pc|Ro|Ra|Re|K|N|Da|De|Hz|h|m|L|g|V|A|W|Å|Ω|C|S|F|J|Pa|T|s|D|t)[0-9_]*)(?![a-zA-Z0-9_])",
+					"captures": {
+						"1": { "name": "constant.numeric.lacon" },
+						"2": { "name": "variable.language.n-value.lacon" },
+						"3": { "name": "keyword.other.unit.base.lacon" }
+					}
+				},
+				{
+					"comment": "2b. Оператор + единица",
+					"match": "([/*×⋅°])((?:(?:deg|da|h|k|M|G|T|P|E|Z|Y|R|Q|d|c|m|μ|n|p|f|a|z|y|r|q)*i?)(?:sec|min|hour|day|week|month|year|Byte|bit|Bel|erg|mol|ohm|rem|cal|psi|bar|Wh|eV|lx|lm|cd|lb|oz|kn|px|em|pt|in|pc|Ro|Ra|Re|K|N|Da|De|Hz|h|m|L|g|V|A|W|Å|Ω|C|S|F|J|Pa|T|s|D|t)[0-9_]*)(?![a-zA-Z0-9_])",
+					"captures": {
+						"1": { "name": "keyword.other.unit.operator.lacon" },
+						"2": { "name": "keyword.other.unit.base.lacon" }
+					}
+				}
+			]
+		},
+		"declaration-keywords": {
+			"patterns": [
+				{ "name": "storage.type.variable.lacon", "match": "\\b(let|variable|var)\\b" },
+				{ "name": "storage.type.structure.lacon", "match": "\\b(struct|structure)\\b" },
+				{ "name": "storage.type.constant.lacon", "match": "\\b(const|constant)\\b" },
+				{ "name": "storage.type.entry.lacon", "match": "\\b(entry)\\b" },
+				{ "name": "storage.type.container.lacon", "match": "\\b(cont|container)\\b" }
+			]
+		},
+		"keywords": {
+			"patterns": [
+				{ "name": "keyword.control.import.lacon", "match": "(?<!\\.)\\b(import|export|from|include|provide|schema)\\b" },
+				{ "name": "keyword.control.conditional.lacon", "match": "(?<!\\.)\\b(if|else|elif|match|case|default|switch|when)\\b" },
+				{ "name": "keyword.control.loop.lacon", "match": "(?<!\\.)\\b(for|while|loop)\\b" },
+				{ "name": "keyword.control.directive.lacon", "match": "(?<!\\.)\\b(generate|spread|filter)\\b" },
+				{ "name": "keyword.control.flow.lacon", "match": "(?<!\\.)\\b(break|continue|return|yield|exit|cancel|until)\\b" },
+				{ "name": "keyword.control.exception.lacon", "match": "(?<!\\.)\\b(try|catch|finally|throw)\\b" },
+				{ "name": "keyword.control.async.lacon", "match": "(?<!\\.)\\b(await|async|coroutine|defer)\\b" },
+				{ "name": "keyword.control.other.lacon", "match": "(?<!\\.)\\b(sanction|be|only|context|condition|action|capability|may)\\b" },
+				{ "name": "keyword.operator.expression.lacon", "match": "(?<!\\.)\\b(contains|where|with|as|is|in|of|[eE]xtends|[iI]mplements)\\b" },
+				{ "name": "support.class.lacon", "match": "(?<!\\.)\\b(new|use)\\b" },
+				{ "name": "support.class.lacon", "match": "(?<!\\.)\\b([mM]arker)\\b" },
+				{ "name": "entity.name.section.lacon", "match": "\\b([gGsS]et)\\b" }
+			]
+		},
+		"storage-modifiers": {
+			"patterns": [
+				{ "name": "storage.type.lacon", "match": "(§[\\p{L}_\\p{N}0-9_-]*|(?<![\\w_-])\\b(class|section|interface|enum|func|function|proc|procedure|[tT]ype|alias)\\b(?![\\w_-]))" },
+				{ "name": "support.type.lacon", "match": "\\b(auto)\\b" },
+				{ "name": "storage.modifier.oo.lacon", "match": "\\b(static|virtual|abstract|override|final|(im)?mutable)\\b" }
+			]
+		},
+		"access-modifiers": {
+			"patterns": [{ "name": "storage.modifier.access.lacon", "match": "\\b(public|private|protected|internal|external|global|local|strict)\\b" }]
+		},
+		"operators": {
+			"patterns": [
+				{ "name": "keyword.operator.logical.lacon", "match": "\\b(and|or|not)\\b" },
+				{ "name": "keyword.operator.arrow.lacon", "match": "([|=-][<>])" },
+				{ "name": "keyword.operator.logical.symbolic.lacon", "match": "(&&|\\|\\||\\?\\?|!)" },
+				{ "name": "keyword.operator.assignment.lacon", "match": "([.+*/%‰‱&|^]?=)" },
+				{ "name": "keyword.operator.comparison.lacon", "match": "([><~!=]=?=?)" },
+				{ "name": "keyword.operator.arithmetic.lacon", "match": "([-+./]?[\/*+%‰‱-])" },
+				{ "name": "keyword.operator.bitwise.lacon", "match": "(&|\\||\\^|~)" },
+				{ "name": "keyword.operator.other.lacon", "match": "(\\?|:|@|#|\\$|\\.\\.\\.|\\.\\.|\\\\)" },
+				{ "name": "keyword.operator.other.lacon", "match": "(\u2238|\u2214|\u00B1|\u00D7|\u00F7|\u2260|\u2264|\u2265|\u2263)" },
+				{ "name": "keyword.operator.floor.lacon", "match": "(⌊|⌋|⌈|⌉)" },
+				{ "name": "keyword.operator.floor.lacon", "match": "(delta|Δ)" }
+			]
+		},
+		"constants": {
+			"patterns": [
+				{ "name": "constant.language.boolean.lacon", "match": "\\b(true|false)\\b" },
+				{ "name": "constant.language.null.lacon", "match": "\\b(nil|undefined)\\b" },
+				{ "name": "support.type.lacon", "match": "\\b(none)\\b" },
+				{ "name": "variable.language.lacon", "match": "\\b(this|super|root|parent|origin|here|self)\\b" },
+				{ "name": "variable.language.value.lacon", "match": "\\b(values?|v|vals?)\\b" },
+				{ "name": "variable.language.method.lacon", "match": "\\b(methods?)\\b" },
+				{ "name": "variable.language.input.lacon", "match": "\\b(inputs?)\\b" },
+				{ "name": "variable.language.output.lacon", "match": "\\b(outputs?)\\b" },
+				{ "name": "variable.language.argument.lacon", "match": "\\b(arguments?|args?)\\b" },
+				{ "name": "variable.language.data.lacon", "match": "\\b(data)\\b" },
+				{ "name": "variable.language.each.lacon", "match": "\\b(each)\\b" },
+				{ "name": "variable.language.item.lacon", "match": "\\b(items?)\\b" },
+				{ "name": "variable.language.element.lacon", "match": "\\b(elements?|elems?)\\b" },
+				{ "name": "variable.language.key.lacon", "match": "\\b(keys?|k)\\b" },
+				{ "name": "variable.language.index.lacon", "match": "\\b(index|indexes|i|j)\\b" },
+				{ "name": "variable.language.flag.lacon", "match": "\\b(flags?|f)\\b" },
+				{ "name": "variable.language.xyz.lacon", "match": "\\b(x|y|z)\\b" },
+				{ "name": "variable.language.other.lacon", "match": "\\b(t|c|r|n|m)\\b" },
+				{ "name": "constant.other.placeholder.lacon", "match": "\\b_\\b" }
+			]
+		},
+		"value-types": {
+			"patterns": [
+				{ "name": "support.type.number.lacon", "match": "\\b(Number|Int|Float|Hex|Octal|Binary|Base32)\\b" },
+				{ "name": "support.type.unit.lacon", "match": "\\b(Unit|Length|Time|Velocity|Acceleration|Jerk|Snap|Crackle|Pop|Amount|Degree|Radian|Percent|Frequency|Fraction|Dimension|Temperature|Pressure|Volume|Energy|Size|Mass|Force|Area|BitRate|Momentum|Expr|Scalar)\\b" },
+				{ "name": "support.type.unit.electric.lacon", "match": "\\b(Electric)*(Power|Current|Voltage|Charge|Resistance|Conductance|Capacitance)\\b" },
+				{ "name": "support.type.unit.light.lacon", "match": "\\b(LuminousFlux|Illuminance|LuminousIntensity)\\b" },
+				{ "name": "support.type.object.lacon", "match": "\\b(Subject|Object|Array|Dictionary|Table|Function|Procedure|MultilineString)\\b" },
+				{ "name": "support.type.other.lacon", "match": "\\b(Any|String|Boolean|Auto|None|Nil|Undefined|Color)\\b" }
+			]
+		},
+		"attributes": {
+			"patterns": [
+				{ "name": "storage.type.attribute.lacon", "match": "\\b(meta|reflect|attribute)\\b" },
+				{
+					"name": "meta.attribute.lacon",
+					"begin": "(@)(\\[)",
+					"beginCaptures": {
+						"1": { "name": "entity.name.tag.attribute.lacon" },
+						"2": { "name": "punctuation.section.bracket.begin.lacon" }
+					},
+					"end": "\\]",
+					"endCaptures": {
+						"0": { "name": "punctuation.section.bracket.end.lacon" }
+					},
+					"patterns": [{ "include": "#keywords" }, { "include": "#strings" }, { "include": "#numbers" }, { "include": "#constants" }, { "include": "#operators" }, { "include": "#identifiers" }]
+				},
+				{ "name": "entity.name.tag.attribute.lacon", "match": "@[\\p{L}_][\\p{L}\\p{N}_-]*" },
+				{ "name": "entity.name.tag.directive.lacon", "match": "#[\\p{L}_][\\p{L}\\p{N}_-]*" }
+			]
+		},
+		"functions": {
+			"patterns": [
+				{
+					"match": "\\b(function|procedure)\\s+([\\p{L}_][\\p{L}\\p{N}_-]*)(?:\\s*<[^>]+>)?",
+					"captures": {
+						"1": { "name": "storage.type.function.lacon" },
+						"2": { "name": "entity.name.function.lacon" }
+					}
+				},
+				{
+					"name": "entity.name.function.call.lacon",
+					"match": "\\b([\\p{L}_][\\p{L}\\p{N}_-]*)(?=\\s*<[^>]+>\\s*\\(|\\s*\\()"
+				}
+			]
+		},
+		"type-annotations": {
+			"patterns": [
+				{
+					"name": "meta.type.annotation.lacon",
+					"begin": "(<)",
+					"beginCaptures": {
+						"1": { "name": "punctuation.definition.typeparameters.begin.lacon" }
+					},
+					"end": "(>)",
+					"endCaptures": {
+						"1": { "name": "punctuation.definition.typeparameters.end.lacon" }
+					},
+					"patterns": [{ "include": "#value-types" }, { "name": "entity.name.type.lacon", "match": "[\\p{L}_][\\p{L}\\p{N}_]*" }]
+				}
+			]
+		},
+		"types": {
+			"patterns": [
+				{
+					"match": "\\b(class|interface|enum)\\s+([\\p{Lu}][\\p{L}\\p{N}_]*)",
+					"captures": {
+						"1": { "name": "storage.type.lacon" },
+						"2": { "name": "entity.name.type.lacon" }
+					}
+				},
+				{ "name": "entity.name.type.lacon", "match": "\\b[\\p{Lu}][\\p{L}\\p{N}_]*\\b" }
+			]
+		},
+		"identifiers": {
+			"patterns": [
+				{ "name": "variable.other.constant.lacon", "match": "\\b[\\p{Lu}][\\p{Lu}\\p{N}_]*\\b" },
+				{ "name": "variable.other.lacon", "match": "\\b[\\p{Ll}_][\\p{L}\\p{N}_-]*\\b" }
+			]
+		}
+	}
 }

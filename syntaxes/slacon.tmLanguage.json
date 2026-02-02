@@ -1,0 +1,163 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Static Lacon",
+	"scopeName": "source.slacon",
+	"fileTypes": ["slacon"],
+	"patterns": [
+		{ "include": "#comments" },
+		{ "include": "#marker-header" },
+		{ "include": "#strings" },
+		{ "include": "#arrays" },
+		{ "include": "#numbers" },
+		{ "include": "#units" },
+		{ "include": "#attributes" },
+		{ "include": "#type-annotations" },
+		{ "include": "#constants" },
+		{ "include": "#operators" },
+		{ "include": "#value-types" },
+		{
+			"name": "meta.entry.slacon",
+			"match": "\\b([\\p{L}_][\\p{L}\\p{N}_-]*)\\b(?=\\s*[:=@<]|\\s+([\\p{L}\\p{N}_\"'`{\\[]))",
+			"captures": {
+				"1": { "name": "entity.name.function.slacon" }
+			}
+		},
+		{ "include": "#types" },
+		{ "include": "#identifiers" }
+	],
+	"repository": {
+		"marker-header": {
+			"match": "(?i)(\\[)(marker)(:)(output)(?:(<)([^>]+)(>))?(\\])",
+			"captures": {
+				"1": { "name": "punctuation.definition.tag.lacon" },
+				"2": { "name": "support.class.lacon" },
+				"3": { "name": "keyword.operator.other.lacon" },
+				"4": { "name": "variable.language.output.lacon" },
+				"5": { "name": "punctuation.definition.typeparameters.begin.lacon" },
+				"6": { "name": "entity.name.type.lacon" },
+				"7": { "name": "punctuation.definition.typeparameters.end.lacon" },
+				"8": { "name": "punctuation.definition.tag.lacon" }
+			}
+		},
+		"comments": {
+			"patterns": [
+				{
+					"name": "comment.line.slacon",
+					"begin": "/\\|\\\\",
+					"end": "$",
+					"captures": { "0": { "name": "punctuation.definition.comment.slacon" } }
+				},
+				{
+					"name": "comment.block.slacon",
+					"begin": "/\\*",
+					"end": "\\*/",
+					"captures": { "0": { "name": "punctuation.definition.comment.slacon" } }
+				}
+			]
+		},
+		"strings": {
+			"patterns": [
+				{
+					"name": "string.quoted.double.slacon",
+					"begin": "\"",
+					"end": "\"",
+					"patterns": [{ "name": "constant.character.escape.slacon", "match": "\\\\." }]
+				},
+				{
+					"name": "string.quoted.single.slacon",
+					"begin": "`",
+					"end": "`"
+				},
+				{
+					"name": "string.quoted.other.slacon",
+					"begin": "'",
+					"end": "'"
+				}
+			]
+		},
+		"arrays": {
+			"begin": "\\[",
+			"end": "\\]",
+			"beginCaptures": { "0": { "name": "punctuation.section.array.begin.slacon" } },
+			"endCaptures": { "0": { "name": "punctuation.section.array.end.slacon" } },
+			"patterns": [{ "include": "#comments" }, { "include": "#strings" }, { "include": "#numbers" }, { "include": "#units" }, { "include": "#constants" }, { "include": "#type-annotations" }, { "include": "#arrays" }, { "name": "text.plain.slacon", "match": "[\\p{L}_][\\p{L}\\p{N}_-]*" }]
+		},
+		"numbers": {
+			"patterns": [
+				{ "name": "constant.numeric.float.slacon", "match": "\\b\\d[0-9_]*\\.\\d[0-9_]*([eE][+-]?\\d[0-9_]*)?\\b" },
+				{ "name": "constant.numeric.integer.slacon", "match": "\\b\\d[0-9_]*\\b" },
+				{ "name": "constant.numeric.hex.slacon", "match": "\\b0[xX][0-9a-fA-F_]+\\b" }
+			]
+		},
+		"units": {
+			"patterns": [
+				{
+					"match": "(\\b\\d[0-9_]*(?:\\.[0-9_]+)?)([%‰‱])",
+					"captures": {
+						"1": { "name": "constant.numeric.slacon" },
+						"2": { "name": "keyword.other.unit.percent.slacon" }
+					}
+				},
+				{
+					"match": "(?:\\b(\\d[0-9_]*(?:\\.[0-9_]+)?(?:[eE][+-]?\\d+)?|Infinity))\\s*((?:(?:deg|da|h|k|M|G|T|P|E|Z|Y|R|Q|d|c|m|μ|n|p|f|a|z|y|r|q)*i?)(?:sec|min|hour|day|week|month|year|Byte|bit|Bel|erg|mol|ohm|rem|cal|psi|bar|Wh|eV|lx|lm|cd|lb|oz|kn|px|em|pt|in|pc|Ro|Ra|Re|K|N|Da|De|Hz|h|m|L|g|V|A|W|Å|Ω|C|S|F|J|Pa|T|s|D|t)[0-9_]*)",
+					"captures": {
+						"1": { "name": "constant.numeric.slacon" },
+						"2": { "name": "keyword.other.unit.base.slacon" }
+					}
+				}
+			]
+		},
+		"attributes": {
+			"patterns": [
+				{
+					"name": "meta.attribute.slacon",
+					"begin": "(@)(\\[)",
+					"beginCaptures": {
+						"1": { "name": "entity.name.tag.attribute.slacon" },
+						"2": { "name": "punctuation.section.bracket.begin.slacon" }
+					},
+					"end": "\\]",
+					"patterns": [{ "include": "#strings" }, { "include": "#numbers" }, { "include": "#constants" }, { "include": "#operators" }]
+				},
+				{ "name": "entity.name.tag.attribute.slacon", "match": "@[\\p{L}_][\\p{L}\\p{N}_-]*" }
+			]
+		},
+		"type-annotations": {
+			"begin": "(<)",
+			"end": "(>)",
+			"beginCaptures": { "1": { "name": "punctuation.definition.typeparameters.begin.slacon" } },
+			"endCaptures": { "1": { "name": "punctuation.definition.typeparameters.end.slacon" } },
+			"patterns": [{ "include": "#value-types" }, { "name": "entity.name.type.slacon", "match": "[\\p{L}_][\\p{L}\\p{N}_]*" }]
+		},
+		"value-types": {
+			"patterns": [
+				{ "name": "support.type.number.lacon", "match": "\\b(Number|Int|Float|Hex|Octal|Binary|Base32)\\b" },
+				{ "name": "support.type.unit.lacon", "match": "\\b(Unit|Length|Time|Velocity|Acceleration|Jerk|Snap|Crackle|Pop|Amount|Degree|Radian|Percent|Frequency|Fraction|Dimension|Temperature|Pressure|Volume|Energy|Size|Mass|Force|Area|BitRate|Momentum|Expr|Scalar)\\b" },
+				{ "name": "support.type.unit.electric.lacon", "match": "\\b(Electric)*(Power|Current|Voltage|Charge|Resistance|Conductance|Capacitance)\\b" },
+				{ "name": "support.type.unit.light.lacon", "match": "\\b(LuminousFlux|Illuminance|LuminousIntensity)\\b" },
+				{ "name": "support.type.object.lacon", "match": "\\b(Subject|Object|Array|Dictionary|Table|Function|Procedure|MultilineString)\\b" },
+				{ "name": "support.type.other.lacon", "match": "\\b(Any|String|Boolean|Auto|None|Nil|Undefined|Color)\\b" }
+			]
+		},
+		"constants": {
+			"patterns": [
+				{ "name": "constant.language.boolean.slacon", "match": "\\b(true|false)\\b" },
+				{ "name": "constant.language.null.slacon", "match": "\\b(nil|undefined)\\b" }
+			]
+		},
+		"operators": {
+			"patterns": [
+				{ "name": "keyword.operator.arithmetic.slacon", "match": "([/*×⋅°+-])" },
+				{ "name": "keyword.operator.other.slacon", "match": "(delta|Δ|:|@|=)" }
+			]
+		},
+		"types": {
+			"match": "\\b[\\p{Lu}][\\p{L}\\p{N}_]*\\b",
+			"name": "entity.name.type.slacon"
+		},
+		"identifiers": {
+			"match": "\\b[\\p{L}_][\\p{L}\\p{N}_-]*\\b",
+			"name": "variable.other.slacon"
+		}
+	}
+}

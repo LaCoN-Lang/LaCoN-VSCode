@@ -4,7 +4,7 @@ import * as laconWasm from '../modules/wasm/wasm';
 
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
 	await initializeLocalization(context);
-	console.log('TEEWEEST');
+	console.log('TEST');
 
 	testWasm();
 }

@@ -2,5 +2,8 @@
 	"editor.wordWrap": "on",
 	"editor.formatOnSave": true,
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"[json]": {
+		"editor.formatOnSave": false,
+	},
 	"cSpell.enabled": true
 }

@@ -34,9 +34,39 @@
 					"lacon"
 				],
 				"extensions": [
-					".lacon",
-					".slacon",
+					".lacon"
+				],
+				"configuration": "./language-configuration.json",
+				"icon": {
+					"dark": "./icons/icon.svg",
+					"light": "./icons/icon.svg"
+				}
+			},
+			{
+				"id": "llacon",
+				"aliases": [
+					"LLaCoN",
+					"List LaCoN",
+					"llacon"
+				],
+				"extensions": [
 					".llacon"
+				],
+				"configuration": "./language-configuration.json",
+				"icon": {
+					"dark": "./icons/icon.svg",
+					"light": "./icons/icon.svg"
+				}
+			},
+			{
+				"id": "slacon",
+				"aliases": [
+					"SLaCoN",
+					"Static LaCoN",
+					"slacon"
+				],
+				"extensions": [
+					".slacon"
 				],
 				"configuration": "./language-configuration.json",
 				"icon": {
@@ -50,6 +80,16 @@
 				"language": "lacon",
 				"scopeName": "source.lacon",
 				"path": "./syntaxes/lacon.tmLanguage.json"
+			},
+			{
+				"language": "llacon",
+				"scopeName": "source.llacon",
+				"path": "./syntaxes/llacon.tmLanguage.json"
+			},
+			{
+				"language": "slacon",
+				"scopeName": "source.slacon",
+				"path": "./syntaxes/slacon.tmLanguage.json"
 			}
 		]
 	},
