@@ -4,9 +4,6 @@ import { LanguageClient, LanguageClientOptions, ServerOptions } from 'vscode-lan
 
 let client: LanguageClient;
 
-/**
- * Основная функция активации LSP клиента
- */
 export async function activate(context: vscode.ExtensionContext) {
 	// Путь к твоему бинарнику. Проверь, что он реально лежит в modules/lsp.exe
 	const serverPath = context.asAbsolutePath(path.join('modules', 'lsp.exe'));
