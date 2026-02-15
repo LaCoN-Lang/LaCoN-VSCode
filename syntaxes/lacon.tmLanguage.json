@@ -245,7 +245,8 @@
 				{ "name": "keyword.control.exception.lacon", "match": "(?<!\\.)\\b(try|catch|finally|throw)\\b" },
 				{ "name": "keyword.control.async.lacon", "match": "(?<!\\.)\\b(await|async|coroutine|defer)\\b" },
 				{ "name": "keyword.control.other.lacon", "match": "(?<!\\.)\\b(sanction|be|only|context|condition|action|capability|may)\\b" },
-				{ "name": "keyword.operator.expression.lacon", "match": "(?<!\\.)\\b(contains|where|with|as|is|in|of|[eE]xtends|[iI]mplements)\\b" },
+				{ "name": "keyword.control.event.lacon", "match": "(?<!\\.)\\b(event)\\b" },
+				{ "name": "keyword.operator.expression.lacon", "match": "(?<!\\.)\\b(contains|where|with|as|is|in|on|at|of|[eE]xtends|[iI]mplements)\\b" },
 				{ "name": "support.class.lacon", "match": "(?<!\\.)\\b(new|use)\\b" },
 				{ "name": "support.class.lacon", "match": "(?<!\\.)\\b([mM]arker)\\b" },
 				{ "name": "entity.name.section.lacon", "match": "\\b([gGsS]et)\\b" }
